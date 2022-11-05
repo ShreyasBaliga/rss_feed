@@ -1,0 +1,7 @@
+.content {
+    overflow: auto;
+}
+
+.content img {
+    max-width: 100%;
+}

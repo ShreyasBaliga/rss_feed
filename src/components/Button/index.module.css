@@ -1,0 +1,22 @@
+.button {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 1px solid #FF6D1B;
+    font-weight: 400;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 7px 10px;
+    min-width: 100px;
+    border-radius: 5px;
+}
+
+.primary {
+    background: #FF6D1B;
+    color: #FFF;
+}
+
+.secondary {
+    color: #FF6D1B;
+    background: #FFF;
+}

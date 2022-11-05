@@ -1,0 +1,42 @@
+.container {
+    width: 100%;
+    height: 93%;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.manageFeedBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    border: 1px solid #FF6D1B;
+    background: transparent;
+    font-weight: 400;
+    color: #FF6D1B;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.cardsContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    margin-top: 10px;
+    overflow-y: auto;
+}
+
+.cardsContainer > div {
+    margin: 10px 0;
+}
