@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { AiFillStar } from 'react-icons/ai';
 
 import { deleteFeed, getFeeds, updateFeed } from '../../store/slices/feedsSlice';
 
@@ -14,12 +15,21 @@ import styles from './index.module.css';
 export default function Feeds() {
     const [showManageFeeds, setShowManageFeeds] = useState(false);
     const [editData, setEditData] = useState(null);
+    const [showFavorite, setShowFavrite] = useState(false);
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const { uid } = useSelector(state => state.user);
     const { entities, status } = useSelector(state => state.feeds);
-    const feedIds = Object.keys(entities);
+
+    const filteredFeedIds = useMemo(() => {
+        const feedIds = Object.keys(entities);
+        if (showFavorite) {
+            return feedIds.filter(key => entities[key].bookmarked);
+        }
+        return feedIds;
+    }, [entities, showFavorite]);
 
     useEffect(() => {
         dispatch(getFeeds(uid))
@@ -29,7 +39,6 @@ export default function Feeds() {
         if (showManageFeeds && editData) setEditData(null);
         setShowManageFeeds(show => !show)
     };
-
     const onCardClick = feedId => navigate(`/dashboard/feeds/${feedId}`);
     const onBookmark = (feedId, isBookmarked) => dispatch(updateFeed({ feedId, bookmarked: !isBookmarked }));
     const onEdit = (feedId, name, url) => {
@@ -37,6 +46,7 @@ export default function Feeds() {
         setEditData({ feedId, name, url });
     }
     const onDelete = feedId => dispatch(deleteFeed(feedId));
+    const toggleShowFavorite = () => setShowFavrite(favorite => !favorite);
 
     if (status === 'loading') return <Spinner />;
 
@@ -45,17 +55,21 @@ export default function Feeds() {
             <div className={styles.title}>
                 <div style={{ fontWeight: 900, fontSize: 24 }}>
                     My Feed
-                    <span>{` (${feedIds.length})`}</span>
+                    <span>{` (${filteredFeedIds.length})`}</span>
                 </div>
-                {feedIds.length > 0 && <Button onClick={toggleManageFeeds}>Add Feed</Button>}
+                {filteredFeedIds.length > 0 && <Button onClick={toggleManageFeeds}>Add Feed</Button>}
+            </div>
+            <div className={styles.favoriteButton} onClick={toggleShowFavorite}>
+                {!showFavorite && <AiFillStar className={styles.favoriteButtonIcon} />}
+                {showFavorite ? 'Show All' : 'Show Favorites'}
             </div>
             <div className={styles.cardsContainer}>
-                {feedIds.length > 0 ? feedIds.map(key => {
+                {filteredFeedIds.length > 0 ? filteredFeedIds.map(key => {
                     const { name, url, bookmarked } = entities[key];
                     return <FeedCard key={key} name={name} url={url} bookmarked={bookmarked} onEdit={() => onEdit(key, name, url)} onDelete={() => onDelete(key)} onBookmark={() => onBookmark(key, bookmarked)} onCardClick={() => onCardClick(key)} />
                 }) : <div className={styles.noData}>
-                    <span className={styles.noDataMessage}>You currently don't have any feeds added.</span>
-                    <Button onClick={toggleManageFeeds} size='lg' >Add Feed</Button>
+                    <span className={styles.noDataMessage}>{`You currently don't have any feeds ${showFavorite ? 'marked as favorites' : 'added'}`}</span>
+                    <Button onClick={showFavorite ? toggleShowFavorite : toggleManageFeeds} size='lg' >{showFavorite ? 'Show All' : 'Add Feed'}</Button>
                 </div>}
             </div>
             {showManageFeeds && <ManageFeeds editData={editData} toggleManageFeeds={toggleManageFeeds} />}

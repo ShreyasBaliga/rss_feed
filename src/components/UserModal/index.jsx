@@ -1,8 +1,9 @@
 import React from 'react';
-import styles from './index.module.css'
 import { BiLogOut } from 'react-icons/bi';
 
 import UserAvatar from '../UserAvatar';
+
+import styles from './index.module.css'
 
 const UserModal = props => {
     const { name, email, onLogout, onClose } = props;

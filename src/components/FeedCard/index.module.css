@@ -25,7 +25,7 @@
 .contentContainer {
     flex: 2;
     margin: 0 10px;
-    width: calc(100% - 142px)
+    width: calc(100% - 150px)
 }
 
 .name {
@@ -59,4 +59,10 @@
     color: #666666;
     font-size: 16px;
     margin: 0 10px;
+    width: 18px;
+    height: 100%;
+}
+
+.actionButton:hover {
+    color: #4392f1;
 }

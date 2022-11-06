@@ -8,5 +8,23 @@
 }
 
 .image {
-	width: 50%;
+	width: 40%;
+}
+
+@media only screen and (max-width: 900px) {
+    .image {
+		width: 60%;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .image {
+		width: 70%;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .image {
+        width: 80%;
+    }
 }

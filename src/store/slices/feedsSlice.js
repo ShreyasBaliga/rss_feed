@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { addFeed as firestoreAddFeed, getFeeds as firestoreGetFeeds, updateFeed as firestoreUpdateFeed, deleteFeed as firestoreDeleteFeed, getFeed as firestoreGetFeed } from '../../services/firebase';
+
+import * as firebaseStore from '../../services/firebase';
 import { getFeedInfo as fetchFeedInfo } from '../../services/feed';
 
 const initialState = {
@@ -11,16 +12,25 @@ const initialState = {
 export const addFeed = createAsyncThunk(
     'feeds/addFeed',
     async (data, { dispatch }) => {
-        const documentSnapshot = await firestoreAddFeed(data);
+        const documentSnapshot = await firebaseStore.addFeed(data);
         const { name, url, bookmarked } = data;
         return { id: documentSnapshot.id, name, url, bookmarked };
+    },
+    {
+        condition: (_, { getState }) => {
+            const { feeds: { status } } = getState();
+            if (status === 'loading') {
+                return false
+            }
+            return true;
+        },
     }
 );
 
 export const getFeeds = createAsyncThunk(
     'feeds/getFeeds',
     async (uid) => {
-        const documentSnapshots = await firestoreGetFeeds(uid);
+        const documentSnapshots = await firebaseStore.getFeeds(uid);
         if (documentSnapshots) {
             const entities = {}
             documentSnapshots.forEach(doc => {
@@ -30,18 +40,36 @@ export const getFeeds = createAsyncThunk(
             });
             return { entities };
         }
+    },
+    {
+        condition: (_, { getState }) => {
+            const { feeds: { status } } = getState();
+            if (status === 'loading') {
+                return false
+            }
+            return true;
+        },
     }
 );
 
 export const getFeed = createAsyncThunk(
     'feeds/getFeed',
     async (feedId) => {
-        const documentSnapshot = await firestoreGetFeed(feedId);
+        const documentSnapshot = await firebaseStore.getFeed(feedId);
         if (documentSnapshot) {
             const feedId = documentSnapshot.id;
             const { name, url, bookmarked } = documentSnapshot.data();
             return { id: feedId, name, url, bookmarked };
         }
+    },
+    {
+        condition: (_, { getState }) => {
+            const { feeds: { status } } = getState();
+            if (status === 'loading') {
+                return false
+            }
+            return true;
+        },
     }
 );
 
@@ -51,17 +79,34 @@ export const updateFeed = createAsyncThunk(
         const { feedId, ...restUpdateData } = data;
         const { feeds: { entities } } = getState();
         const currentData = entities[feedId];
-        console.log(currentData);
-        await firestoreUpdateFeed(feedId, restUpdateData);
+        await firebaseStore.updateFeed(feedId, restUpdateData);
         return { ...currentData, ...restUpdateData, id: feedId };
+    },
+    {
+        condition: (_, { getState }) => {
+            const { feeds: { status } } = getState();
+            if (status === 'loading') {
+                return false
+            }
+            return true;
+        },
     }
 );
 
 export const deleteFeed = createAsyncThunk(
     'feeds/deleteFeed',
     async (feedId) => {
-        await firestoreDeleteFeed(feedId);
+        await firebaseStore.deleteFeed(feedId);
         return { id: feedId };
+    },
+    {
+        condition: (_, { getState }) => {
+            const { feeds: { status } } = getState();
+            if (status === 'loading') {
+                return false
+            }
+            return true;
+        },
     }
 );
 
@@ -72,10 +117,19 @@ export const getFeedInfo = createAsyncThunk(
         if (data) {
             return data;
         }
+    },
+    {
+        condition: (_, { getState }) => {
+            const { feeds: { status } } = getState();
+            if (status === 'loading') {
+                return false
+            }
+            return true;
+        },
     }
 );
 
-const userSlice = createSlice({
+const feedSlice = createSlice({
     name: 'feeds',
     initialState,
     extraReducers: (builder) => {
@@ -84,67 +138,58 @@ const userSlice = createSlice({
                 state.status = 'loading';
             })
             .addCase(addFeed.fulfilled, (state, action) => {
-                if (state.status === 'loading') {
-                    const { id, name, url, bookmarked } = action.payload;
-                    state.entities[id] = { name, url, bookmarked };
-                    state.status = 'idle';
-                }
+                const { id, name, url, bookmarked } = action.payload;
+                state.entities[id] = { name, url, bookmarked };
+                state.status = 'idle';
             })
             .addCase(getFeeds.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(getFeeds.fulfilled, (state, action) => {
-                if (state.status === 'loading') {
-                    const { entities } = action.payload;
-                    if (entities) state.entities = entities;
-                    state.status = 'idle';
-                }
+                const { entities } = action.payload;
+                if (entities) state.entities = entities;
+                state.status = 'idle';
             })
             .addCase(getFeedInfo.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(getFeedInfo.fulfilled, (state, action) => {
-                if (state.status === 'loading') {
-                    const { feed, items } = action.payload;
-                    if (feed && items)
-                        state.feedInfo = {
-                            feed, items
-                        };
-                    state.status = 'idle';
-                }
+                const { feed, items } = action.payload;
+                if (feed && items)
+                    state.feedInfo = {
+                        feed, items
+                    };
+                state.status = 'idle';
             })
             .addCase(getFeed.pending, (state) => {
                 state.status = 'loading';
             })
+            .addCase(getFeed.rejected, (state) => {
+                state.status = 'idle';
+            })
             .addCase(getFeed.fulfilled, (state, action) => {
-                if (state.status === 'loading') {
-                    const { id, name, url, bookmarked } = action.payload;
-                    state.entities[id] = { name, url, bookmarked };
-                    state.status = 'idle';
-                }
+                const { id, name, url, bookmarked } = action.payload;
+                state.entities[id] = { name, url, bookmarked };
+                state.status = 'idle';
             })
             .addCase(updateFeed.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(updateFeed.fulfilled, (state, action) => {
-                if (state.status === 'loading') {
-                    const { id, name, url, bookmarked } = action.payload;
-                    state.entities[id] = { name, url, bookmarked };
-                    state.status = 'idle';
-                }
+                const { id, name, url, bookmarked } = action.payload;
+                state.entities[id] = { name, url, bookmarked };
+                state.status = 'idle';
             })
             .addCase(deleteFeed.pending, (state) => {
                 state.status = 'loading';
             })
             .addCase(deleteFeed.fulfilled, (state, action) => {
-                if (state.status === 'loading') {
-                    const { id } = action.payload;
-                    delete state.entities[id];
-                    state.status = 'idle';
-                }
+                const { id } = action.payload;
+                delete state.entities[id];
+                state.status = 'idle';
             })
     },
 });
 
 
-export default userSlice.reducer;
+export default feedSlice.reducer;

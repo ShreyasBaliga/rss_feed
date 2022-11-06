@@ -13,7 +13,6 @@ const app = initializeApp({
 });
 
 // Auth
-
 export const auth = getAuth();
 
 const googleProvider = new GoogleAuthProvider();
@@ -26,9 +25,7 @@ export const logOut = async () => {
   return signOut(auth);
 }
 
-
 // Store
-
 const db = getFirestore(app);
 
 export const addFeed = async (data) => {

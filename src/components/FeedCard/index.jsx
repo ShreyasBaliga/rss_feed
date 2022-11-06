@@ -1,8 +1,9 @@
 import React from 'react';
-import styles from './index.module.css';
-import * as AiIcons from 'react-icons/ai';
+import { AiFillStar, AiOutlineStar, AiOutlineEdit, AiOutlineDelete } from 'react-icons/ai';
 
 import Tooltip from '../Tooltip';
+
+import styles from './index.module.css';
 
 const FeedCard = props => {
     const { name, url, bookmarked, onBookmark, onEdit, onDelete, onCardClick } = props;
@@ -32,13 +33,13 @@ const FeedCard = props => {
             </div>
             <div className={styles.actionButtonContainer}>
                 <Tooltip content={`${bookmarked ? 'Remove from' : 'Add to'} Favourites`}>
-                    {bookmarked ? <AiIcons.AiFillStar className={styles.actionButton} onClick={onInteralBookmark} /> : <AiIcons.AiOutlineStar className={styles.actionButton} onClick={onInteralBookmark} />}
+                    {bookmarked ? <AiFillStar className={styles.actionButton} onClick={onInteralBookmark} /> : <AiOutlineStar className={styles.actionButton} onClick={onInteralBookmark} />}
                 </Tooltip>
                 <Tooltip content='Edit'>
-                    <AiIcons.AiOutlineEdit className={styles.actionButton} onClick={onInteralEdit} />
+                    <AiOutlineEdit className={styles.actionButton} onClick={onInteralEdit} />
                 </Tooltip>
                 <Tooltip content='Delete' direction='top'>
-                    <AiIcons.AiOutlineDelete className={styles.actionButton} onClick={onInteralDelete} />
+                    <AiOutlineDelete className={styles.actionButton} onClick={onInteralDelete} />
                 </Tooltip>
             </div>
         </div>

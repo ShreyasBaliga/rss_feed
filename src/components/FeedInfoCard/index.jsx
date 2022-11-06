@@ -1,6 +1,7 @@
 import React from 'react';
 import { AiOutlineTwitter, AiFillLinkedin, AiFillFacebook, AiOutlineLink } from 'react-icons/ai';
 
+import PlaceholderImage from '../../assets/images/placeholder.svg';
 import styles from './index.module.css';
 
 const formatDate = pubDate => {
@@ -14,7 +15,7 @@ const FeedInfoCard = props => {
     const onShareClick = e => e.stopPropagation();
     return (
         <div className={styles.card} onClick={onCardClick}>
-            <div className={styles.imageContainer} ><img alt={title} className={styles.image} src={thumbnail} /></div>
+            <div className={styles.imageContainer} ><img alt={title} className={styles.image} src={thumbnail ? thumbnail : PlaceholderImage} /></div>
             <div className={styles.contentContainer}>
                 <span className={styles.title}>{title}</span>
                 <div className={styles.authorDateContainer}>

@@ -1,12 +1,17 @@
 import React from 'react';
+
 import styles from './index.module.css';
 
 const Button = props => {
-    const { children, primary = true, className, size = 'sm', ...rest } = props;
+    const { children, primary = true, className, size = 'sm', disabled, ...rest } = props;
     return (
-        <button className={`${styles.button} ${primary ? styles.primary : styles.secondary} ${className} ${styles[size]}`} {...rest}>
-            {children}
-        </button>
+        <div className={disabled ? styles.containerDisabled : ''}>
+            <button
+                className={`${styles.button} ${primary ? styles.primary : styles.secondary} ${disabled ? styles.disabled : ''} ${className} ${styles[size]}`}
+                {...rest}>
+                {children}
+            </button>
+        </div>
     );
 };
 

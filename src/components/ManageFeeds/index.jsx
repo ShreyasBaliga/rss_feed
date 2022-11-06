@@ -9,6 +9,19 @@ import { addFeed, updateFeed } from '../../store/slices/feedsSlice';
 
 import styles from './index.module.css';
 
+const isValidUrl = url => {
+    try {
+        new URL(url);
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+const isValidName = name => {
+    return /^[a-zA-Z0-9\s\\-]{4,15}$/.test(name);
+}
+
 const ManageFeeds = props => {
     const { toggleManageFeeds, editData } = props;
     const { name: currentName = '', url: currentUrl = '', feedId } = editData || {};
@@ -16,22 +29,36 @@ const ManageFeeds = props => {
 
     const [name, setName] = useState(currentName);
     const [url, setURL] = useState(currentUrl);
+    const [dirty, setDirty] = useState(false);
+
+    const [nameError, setNameError] = useState(false);
+    const [urlError, setURLError] = useState(false);
 
     const dispatch = useDispatch();
     const { uid } = useSelector(state => state.user);
 
     function handleFeedName(e) {
+        if (!dirty) setDirty(true);
+        const value = e.target.value.trim();
+        if(!isValidName(value)) setNameError(true);
+        else if(nameError) setNameError(false);
         setName(e.target.value);
     }
+
     function handleFeedURL(e) {
+        if (!dirty) setDirty(true);
+        const value = e.target.value.trim();
+        if(!isValidUrl(value)) setURLError(true);
+        else if(urlError) setURLError(false);
         setURL(e.target.value.trim());
+        
     }
 
     function handleSubmit(e) {
+        e.preventDefault();
         if (isEdit) dispatch(updateFeed({ feedId, name, url }));
         else dispatch(addFeed({ name, url, bookmarked: false, uid }));
         toggleManageFeeds();
-        e.preventDefault();
     }
 
     function handleCancel(e) {
@@ -48,11 +75,10 @@ const ManageFeeds = props => {
                     placeholder="Enter a valid Feed Name"
                     value={name}
                     onChange={handleFeedName}
-                    minLength="2"
-                    maxLength="25"
-                    required
                     autoComplete='off'
                     containerClassname={styles.inputContainer}
+                    error={nameError}
+                    errorMessage="Please enter a valid Feed Name between 4 to 10 chanracters"
                 />
                 <Input
                     label='URL'
@@ -60,16 +86,14 @@ const ManageFeeds = props => {
                     placeholder="Enter a valid Feed URL"
                     value={url}
                     onChange={handleFeedURL}
-                    minLength="10"
-                    maxLength="100"
-                    required
                     autoComplete='off'
-                    title="custom name for feed URL"
                     containerClassname={styles.inputContainer}
+                    error={urlError}
+                    errorMessage="Please enter a valid Feed URL"
                 />
                 <div className={styles.buttonGroup}>
                     <Button primary={false} onClick={handleCancel} style={{ marginRight: 10 }} >Cancel</Button>
-                    <Button type="Submit" onClick={handleSubmit}>{isEdit ? 'Update' : 'Add'}</Button>
+                    <Button onClick={handleSubmit} disabled={nameError || urlError || !dirty}>{isEdit ? 'Update' : 'Add'}</Button>
                 </div>
             </form>
         </Modal>

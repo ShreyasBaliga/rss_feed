@@ -7,7 +7,7 @@ import styles from './index.module.css';
 const FeedContent = props => {
     const { content: { title, feedContent }, toggleFeedContent } = props;
     return (
-        <Modal title={title} toggleModal={toggleFeedContent} className={styles.modal}>
+        <Modal title={title} toggleModal={toggleFeedContent} modalClassName={styles.modal} modalContainerClassname={styles.modalContainer} >
             <div className={styles.content}
                 dangerouslySetInnerHTML={{ __html: feedContent }}>
             </div>

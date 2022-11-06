@@ -1,0 +1,12 @@
+.logo {
+    font-size: 26px;
+    font-weight: 400;
+    font-family: 'Pacifico', sans-serif, 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    cursor: pointer;
+}
+
+.first {
+    color: #4392f1;
+    font-family: inherit;
+}
