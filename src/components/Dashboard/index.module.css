@@ -1,0 +1,23 @@
+.container {
+    height: 100vh;
+    width: 100vw;
+    padding: 0 200px;
+}
+
+@media only screen and (max-width: 900px) {
+    .container {
+        padding: 0 80px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .container {
+        padding: 0 40px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .container {
+        padding: 0;
+    }
+}

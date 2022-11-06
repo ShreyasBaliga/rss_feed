@@ -4,6 +4,7 @@ const initialState = {
     displayName: '',
     email: '',
     uid: '',
+    status: 'loading',
 };
 
 const userSlice = createSlice({
@@ -15,11 +16,13 @@ const userSlice = createSlice({
             state.displayName = displayName;
             state.email = email;
             state.uid = uid;
+            state.status = 'idle';
         },
         unset: (state) => {
             state.displayName = '';
             state.email = '';
             state.uid = '';
+            state.status = 'idle';
         },
     },
 });

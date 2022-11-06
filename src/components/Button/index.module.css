@@ -2,9 +2,8 @@
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    border: 1px solid #FF6D1B;
+    border: 1px solid #4392f1;
     font-weight: 400;
-    font-size: 14px;
     cursor: pointer;
     padding: 7px 10px;
     min-width: 100px;
@@ -12,11 +11,27 @@
 }
 
 .primary {
-    background: #FF6D1B;
+    background: #4392f1;
     color: #FFF;
 }
 
 .secondary {
-    color: #FF6D1B;
+    color: #4392f1;
     background: #FFF;
+}
+
+.lg {
+    font-size: 14px;
+    padding: 7px 10px;
+}
+
+.md {
+    font-size: 16px;
+    padding: 7px 13px;
+}
+
+
+.lg {
+    font-size: 18px;
+    padding: 7px 16px;
 }

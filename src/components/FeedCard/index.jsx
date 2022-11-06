@@ -2,9 +2,26 @@ import React from 'react';
 import styles from './index.module.css';
 import * as AiIcons from 'react-icons/ai';
 
+import Tooltip from '../Tooltip';
+
 const FeedCard = props => {
     const { name, url, bookmarked, onBookmark, onEdit, onDelete, onCardClick } = props;
     const avatarName = name[0].toUpperCase();
+
+    const onInteralBookmark = event => {
+        event.stopPropagation();
+        onBookmark();
+    }
+
+    const onInteralDelete = event => {
+        event.stopPropagation();
+        onDelete();
+    }
+
+    const onInteralEdit = event => {
+        event.stopPropagation();
+        onEdit();
+    }
 
     return (
         <div className={styles.card} onClick={onCardClick}>
@@ -14,9 +31,15 @@ const FeedCard = props => {
                 <span className={styles.url}>{url}</span>
             </div>
             <div className={styles.actionButtonContainer}>
-                {bookmarked ? <AiIcons.AiFillStar className={styles.actionButton} onClick={onBookmark} /> : <AiIcons.AiOutlineStar className={styles.actionButton} onClick={onBookmark} />}
-                <AiIcons.AiOutlineEdit className={styles.actionButton} onClick={onEdit} />
-                <AiIcons.AiOutlineDelete className={styles.actionButton} onClick={onDelete} />
+                <Tooltip content={`${bookmarked ? 'Remove from' : 'Add to'} Favourites`}>
+                    {bookmarked ? <AiIcons.AiFillStar className={styles.actionButton} onClick={onInteralBookmark} /> : <AiIcons.AiOutlineStar className={styles.actionButton} onClick={onInteralBookmark} />}
+                </Tooltip>
+                <Tooltip content='Edit'>
+                    <AiIcons.AiOutlineEdit className={styles.actionButton} onClick={onInteralEdit} />
+                </Tooltip>
+                <Tooltip content='Delete' direction='top'>
+                    <AiIcons.AiOutlineDelete className={styles.actionButton} onClick={onInteralDelete} />
+                </Tooltip>
             </div>
         </div>
     )

@@ -5,15 +5,17 @@ import Button from '../Button';
 import Input from '../Input';
 import Modal from '../Modal';
 
-import { addFeed } from '../../store/slices/feedsSlice';
+import { addFeed, updateFeed } from '../../store/slices/feedsSlice';
 
 import styles from './index.module.css';
 
 const ManageFeeds = props => {
-    const { toggleManageFeeds } = props;
+    const { toggleManageFeeds, editData } = props;
+    const { name: currentName = '', url: currentUrl = '', feedId } = editData || {};
+    const isEdit = editData !== null;
 
-    const [name, setName] = useState("");
-    const [url, setURL] = useState("");
+    const [name, setName] = useState(currentName);
+    const [url, setURL] = useState(currentUrl);
 
     const dispatch = useDispatch();
     const { uid } = useSelector(state => state.user);
@@ -26,9 +28,8 @@ const ManageFeeds = props => {
     }
 
     function handleSubmit(e) {
-        dispatch(addFeed({ name, url, bookmarked: false, uid }));
-        setName("")
-        setURL("");
+        if (isEdit) dispatch(updateFeed({ feedId, name, url }));
+        else dispatch(addFeed({ name, url, bookmarked: false, uid }));
         toggleManageFeeds();
         e.preventDefault();
     }
@@ -39,7 +40,7 @@ const ManageFeeds = props => {
     }
 
     return (
-        <Modal title='Manage Feeds' toggleModal={toggleManageFeeds} style={{ height: 'max-content' }}>
+        <Modal title={`${isEdit ? 'Edit' : 'Add'} Feed`} toggleModal={toggleManageFeeds} style={{ height: 'max-content' }}>
             <form onSubmit={handleSubmit}>
                 <Input
                     label='Name'
@@ -67,8 +68,8 @@ const ManageFeeds = props => {
                     containerClassname={styles.inputContainer}
                 />
                 <div className={styles.buttonGroup}>
-                    <Button text='Cancel' primary={false} onClick={handleCancel} style={{ marginRight: 10 }} />
-                    <Button type="Submit" text='Add' onClick={handleSubmit} />
+                    <Button primary={false} onClick={handleCancel} style={{ marginRight: 10 }} >Cancel</Button>
+                    <Button type="Submit" onClick={handleSubmit}>{isEdit ? 'Update' : 'Add'}</Button>
                 </div>
             </form>
         </Modal>

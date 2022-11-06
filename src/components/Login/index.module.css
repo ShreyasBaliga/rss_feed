@@ -1,0 +1,37 @@
+.container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	width: 100vw;
+	height: 80vh;
+	text-align: center;
+}
+
+.image {
+	width: 30%;
+	margin-bottom: 20px;
+}
+
+.primaryText {
+	font-size: 24px;
+	margin: 10px;
+	font-weight: 600;
+}
+
+.secondaryText {
+	font-size: 16px;
+	margin: 10px;
+	font-weight: 500;
+}
+
+.googleIcon {
+	font-size: 24px;
+	margin-right: 5px;
+}
+
+@media only screen and (max-width: 600px) {
+    .image {
+        width: 60%;
+    }
+}

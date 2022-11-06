@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, query, where } from "firebase/firestore";
+import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, query, where, doc, getDoc } from "firebase/firestore";
 
 const app = initializeApp({
   apiKey: "AIzaSyA0_zzbffWA0vEgeZg4ro06DBN1Hdnclv8",
@@ -32,12 +32,12 @@ export const logOut = async () => {
 const db = getFirestore(app);
 
 export const addFeed = async (data) => {
-  const { name, url, enabled, uid } = data;
+  const { name, url, bookmarked, uid } = data;
   try {
     const ref = await addDoc(collection(db, "feeds"), {
       name,
       url,
-      enabled,
+      bookmarked,
       uid
     });
     return ref;
@@ -51,21 +51,21 @@ export const getFeeds = async (uid) => {
   return await getDocs(q);
 }
 
-export const updateFeedStatus = async (data) => {
-  const { feedId, status } = data;
+export const getFeed = async (feedId) => {
+  return await getDoc(doc(db, `feeds/${feedId}`));
+}
+
+export const updateFeed = async (feedId, updateData) => {
   try {
-    await updateDoc(collection(db, `feeds/${feedId}`), {
-      status,
-    });
+    await updateDoc(doc(db, `feeds/${feedId}`), updateData);
   } catch (e) {
     console.error("Error updating document: ", e);
   }
 }
 
-export const deleteFeed = async (data) => {
-  const { feedId } = data;
+export const deleteFeed = async (feedId) => {
   try {
-    await deleteDoc(collection(db, `feeds/${feedId}`));
+    await deleteDoc(doc(db, `feeds/${feedId}`));
   } catch (e) {
     console.error("Error deleting document: ", e);
   }

@@ -1,3 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@300;500&display=swap');
+
+:global ::-webkit-scrollbar {
+    background: none;
+    width: 5px;
+    height: 5px;
+}
+
+:global ::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 20px;
+}
+
+:global ::-webkit-scrollbar-track {
+    background: none;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #000;
+    scrollbar-track-color: transparent;
+    font-family:'IBM Plex Sans', sans-serif;
+    box-sizing: border-box;
+}
+
 body {
-    margin: 0;
+  margin: 0;
+  font-family: 'IBM Plex Sans', sans-serif, 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--background);
 }

@@ -15,7 +15,7 @@ export default function UserValidateWrapper(props) {
             } else
                 dispatch(unset())
         });
-    }, [dispatch]);
+    }, []);
 
     return children;
 }

@@ -72,6 +72,30 @@
     align-items: center;
 }
 
+.shareButtonGroup {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.shareButton {
+    font-size: 20px;
+    margin: 0 10px;
+    color: #424242
+}
+
+.shareButtonIcon {
+    font-size: 20px;
+}
+
+.shareButton:first-child {
+    margin-left: 0;
+}
+
+.shareButton:last-child {
+    margin-right: 0;
+}
+
 @media only screen and (max-width: 600px) {
     .card {
         flex-direction: column;
@@ -92,4 +116,9 @@
         width: 100%;
         padding: 16px 0;
     }
+
+    .shareButtonGroup {
+        margin-bottom: 10px;
+    }
+    
 }

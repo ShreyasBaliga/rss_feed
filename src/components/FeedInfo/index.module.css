@@ -1,6 +1,6 @@
 .container {
     width: 100%;
-    height: 93%;
+    height: 92%;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -12,16 +12,17 @@
     justify-content: flex-start;
     align-items: center;
     width: 100%;
+    padding: 0 10px;
 }
 
 .manageFeedBtn {
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    border: 1px solid #FF6D1B;
+    border: 1px solid #4392f1;
     background: transparent;
     font-weight: 400;
-    color: #FF6D1B;
+    color: #4392f1;
     font-size: 16px;
     cursor: pointer;
     padding: 10px;
@@ -35,6 +36,7 @@
     box-sizing: border-box;
     margin-top: 10px;
     overflow-y: auto;
+    padding: 0 10px;
 }
 
 .cardsContainer > div {
