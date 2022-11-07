@@ -1,4 +1,4 @@
-const apiKey = process.env.REACT_APP_RSS_To_JSON_API_KEY;
+const apiKey = process.env.REACT_APP_RSS_TO_JSON_API_KEY;
 
 const getFeedInfo = async (feedId, count = 50) => {
     try {
