@@ -13,9 +13,9 @@ export default function UserValidateWrapper(props) {
                 const { displayName, email, uid } = user;
                 dispatch(set({ displayName, email, uid }));
             } else
-                dispatch(unset())
+                dispatch(unset());
         });
-    }, []);
+    }, [dispatch]);
 
     return children;
 }

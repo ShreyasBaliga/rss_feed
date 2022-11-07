@@ -3,13 +3,13 @@ import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/
 import { getFirestore, collection, getDocs, addDoc, updateDoc, deleteDoc, query, where, doc, getDoc } from "firebase/firestore";
 
 const app = initializeApp({
-  apiKey: "AIzaSyA0_zzbffWA0vEgeZg4ro06DBN1Hdnclv8",
-  authDomain: "rssfeed-74f8e.firebaseapp.com",
-  projectId: "rssfeed-74f8e",
-  storageBucket: "rssfeed-74f8e.appspot.com",
-  messagingSenderId: "170499080578",
-  appId: "1:170499080578:web:89ca184841c06cb0d7cf9b",
-  measurementId: "G-WB94C59CCB"
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId:  process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID
 });
 
 // Auth
